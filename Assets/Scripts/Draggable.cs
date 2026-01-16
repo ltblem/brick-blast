@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Draggable: MonoBehaviour
+public class Draggable : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
     private Vector3 offset;
     private Camera cam;
@@ -11,17 +11,17 @@ public class Draggable: MonoBehaviour
         cam = Camera.main;
     }
 
-    void OnMouseDown()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        Vector3 mouseWorldPos = cam.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
-        offset = transform.position - mouseWorldPos;
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0f;
+        offset = transform.position - worldPos;
     }
 
-    private void OnMouseDrag()
+    public void OnDrag(PointerEventData eventData)
     {
-        Vector3 mouseWorldPos = cam.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
-        transform.position = mouseWorldPos + offset;
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0f;
+        transform.position = worldPos + offset;
     }
 }
